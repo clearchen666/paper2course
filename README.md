@@ -1,20 +1,93 @@
 # Paper2Course
 
-Turn AI papers into bilingual, interactive HTML courses.
+A Codex skill that turns AI papers into bilingual, interactive courses.
 
-Paper2Course is a Codex skill for reading machine learning, deep learning, NLP, CV, agents, robotics, systems-for-ML, data science, and related academic papers. Point it at a PDF, arXiv link, LaTeX source, paper folder, or paper-plus-code project; it produces an English/Chinese course that teaches the paper through visual modules, formula-to-plain-language translations, quizzes, method/data-flow animations, glossary tooltips, and a final synthesis/FAQ.
+Point it at a paper. Get back a polished English/Chinese HTML course that teaches what the paper claims, how the method works, what the experiments actually prove, and what a skeptical builder should test next.
 
-## Credit
+![Paper2Course desktop preview](docs/images/course-preview-desktop.png)
 
-This project is adapted from Zara Zhang's excellent [`codebase-to-course`](https://github.com/zarazhangrui/codebase-to-course).
+## Why This Exists
 
-The original project established the interactive course format, warm developer-notebook visual direction, scroll-based modules, quiz patterns, group chat/data-flow animations, glossary tooltips, and code-to-English translation blocks. Paper2Course extends that foundation from codebases to AI academic papers, adding paper-specific analysis, bilingual English/Chinese output, final synthesis/FAQ sections, and research-reading pedagogy.
+AI papers are dense in a very particular way. The hard part is rarely just "what does this paragraph say?" The hard part is building the right mental model:
 
-All credit for the original concept and course interaction foundation goes to Zara Zhang and `codebase-to-course`.
+- What problem is this paper really solving?
+- What changed compared with RAG, fine-tuning, agents, long context, or previous systems?
+- Which equation, table, or ablation is actually load-bearing?
+- What does the paper prove, and what does it merely suggest?
+- If I asked an AI agent to implement this, what should I tell it to build first?
 
-## What It Generates
+Paper2Course turns that reading process into a course. It starts from the paper's motivation, walks through the mechanism visually, translates formulas and tables into plain language, tests understanding with applied quizzes, and ends with a high-level synthesis plus FAQ.
 
-Each generated course is a static directory:
+## What The Course Looks Like
+
+The generated course is a static website. No backend. No build server. Open it directly or host it anywhere static pages work.
+
+It includes:
+
+- **Bilingual pages** — `index.html` for English and `index.zh.html` for Chinese, with a nav switch
+- **Scroll-based modules** with progress dots and keyboard navigation
+- **Formula / table / algorithm -> plain language translations**
+- **Applied quizzes** that test judgment rather than memorized terms
+- **Method and data-flow animations**
+- **Research-meeting style chats** between model components, datasets, losses, baselines, or evaluators
+- **Glossary tooltips** for technical terms
+- **Final synthesis and FAQ** to resolve the big conceptual confusions
+- **A warm closing note** that reinforces confident, skeptical paper reading
+
+![Paper2Course mobile preview](docs/images/course-preview-mobile.png)
+
+## Who This Is For
+
+Paper2Course is for practical AI builders, product-minded researchers, and vibe coders who want to read AI papers well enough to use them.
+
+It is especially useful if you want to:
+
+- understand a paper without getting trapped in notation
+- compare a method against RAG, fine-tuning, long-context models, agents, or systems tricks
+- identify whether an experiment really supports the paper's claim
+- prompt AI coding/research agents with sharper technical instructions
+- decide what would be expensive, fragile, or worth testing first
+
+## Example Prompts
+
+```text
+Use $paper2course to turn this arXiv paper into an interactive course:
+https://arxiv.org/pdf/2603.23516
+```
+
+```text
+把这篇 AI paper 做成中英双语互动课程：./paper.pdf
+```
+
+```text
+Use $paper2course on this paper plus official repo and explain what I should trust, test, and be skeptical about.
+```
+
+## Install
+
+Clone this repository into your Codex skills directory:
+
+```bash
+git clone https://github.com/clearchen666/paper2course ~/.codex/skills/paper2course
+```
+
+Restart Codex so the skill is discovered.
+
+You can also ask Codex to install it for you:
+
+```text
+Install the skill from https://github.com/clearchen666/paper2course into ~/.codex/skills/paper2course
+```
+
+After installation, try:
+
+```text
+Use $paper2course to turn this AI paper into an interactive course: <paper URL or PDF path>
+```
+
+## Output Structure
+
+Each course is generated as a directory:
 
 ```text
 paper-course-name/
@@ -36,55 +109,30 @@ paper-course-name/
   index.zh.html
 ```
 
-Open `index.html` for English or `index.zh.html` for Chinese. The pages include a top-nav language switch.
+Open `index.html` for English or `index.zh.html` for Chinese. The two pages share the same interaction engine and course structure.
 
-## Course Features
+## Design Philosophy
 
-- Bilingual English/Chinese pages
-- Scroll-based modules with progress dots
-- Formula / algorithm / table / code to plain-language translation blocks
-- Applied quizzes in every module
-- Method or data-flow animations
-- Research-meeting style component chats
-- Glossary tooltips for technical terms
-- Final synthesis and FAQ to resolve common conceptual confusions
-- Warm closing note that reinforces confident, skeptical reading
+### Read for judgment, not just summary
 
-## Who This Is For
+A useful paper walkthrough should tell you what to believe, what to doubt, and what to try. Paper2Course treats every paper as a set of claims, mechanisms, and evidence, not as a pile of paragraphs to summarize.
 
-Paper2Course is for practical AI builders, product-minded researchers, and vibe coders who want to understand AI papers deeply enough to:
+### Translate the load-bearing artifacts
 
-- explain the paper accurately
-- compare it against baselines such as RAG, fine-tuning, agents, or systems tricks
-- inspect what the experiments prove and do not prove
-- steer AI coding/research agents with sharper prompts
-- identify what would be expensive, fragile, or worth testing first
+If the paper's argument depends on an equation, algorithm, figure, table, or ablation, the course translates that artifact into plain language. The goal is not to remove technical detail; it is to make the technical detail usable.
 
-## Install
+### End with the big picture
 
-Clone this repository into your Codex skills directory:
+The final module includes a synthesis and FAQ so the learner leaves with a stable mental model. For example: what is trained once, what changes per user or corpus, where memory is stored, how the method differs from RAG, and what should be tested first.
 
-```bash
-git clone https://github.com/clearchen666/paper2course ~/.codex/skills/paper2course
-```
+## Credit
 
-Restart Codex so the skill is discovered.
+Paper2Course is adapted from Zara Zhang's excellent [`codebase-to-course`](https://github.com/zarazhangrui/codebase-to-course).
 
-## Example Prompts
+The original project established the interactive course format, warm developer-notebook visual direction, scroll-based modules, quiz patterns, group chat/data-flow animations, glossary tooltips, and code-to-English translation blocks. Paper2Course extends that foundation from codebases to AI academic papers, adding paper-specific analysis, bilingual English/Chinese output, final synthesis/FAQ sections, and research-reading pedagogy.
 
-```text
-Use $paper2course to turn this arXiv paper into an interactive course:
-https://arxiv.org/pdf/2603.23516
-```
+All credit for the original concept and course interaction foundation goes to Zara Zhang and `codebase-to-course`.
 
-```text
-把这篇 AI paper 做成中英双语互动课程：./paper.pdf
-```
-
-```text
-Use $paper2course on this paper plus official repo and explain what I should trust, test, and be skeptical about.
-```
-
-## Notes On Licensing
+## Licensing Note
 
 This repository intentionally does not add a separate open-source license at this time. The upstream `codebase-to-course` repository did not declare a license when this project was created, so this repo preserves explicit attribution and avoids making broader license claims.
